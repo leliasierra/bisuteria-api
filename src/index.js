@@ -6,6 +6,7 @@
  */
 
 import express from 'express';
+import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import saleRoutes from './routes/saleRoutes.js';
 
@@ -16,6 +17,7 @@ const PORT = 3000;
 app.use(express.json({ type: 'application/json' }));
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
 
@@ -24,7 +26,7 @@ app.use('/api/sales', saleRoutes);
  * @param {Response} res
  */
 app.get('/', (req, res) => {
-  res.json({ message: 'API Bisutería - CRUD con Zod' });
+  res.json({ message: 'API Bisutería - CRUD con Zod y Autenticación' });
 });
 
 app.listen(PORT, () => {
