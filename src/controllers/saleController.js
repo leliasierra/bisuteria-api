@@ -4,6 +4,7 @@
  */
 
 import { getAllSales, getSaleById, createSale, deleteSale } from '../models/data.js';
+import { getProductById, updateProduct } from '../models/data.js';
 import { saleSchema, saleIdSchema } from '../schemas/saleSchema.js';
 
 /**
@@ -41,7 +42,28 @@ export const addSale = (req, res) => {
     return res.status(400).json({ error: parseResult.error.issues });
   }
   
-  const sale = createSale(parseResult.data);
+  const { productId, quantity } = parseResult.data;
+  const product = getProductById(productId);
+  
+  if (!product) {
+    return res.status(404).json({ error: 'Producto no encontrado' });
+  }
+  
+  if (product.stock < quantity) {
+    return res.status(400).json({ error: 'Stock insuficiente' });
+  }
+  
+  const sale = createSale({
+    productId,
+    productName: product.name,
+    quantity,
+    unitPrice: product.price,
+    total: product.price * quantity,
+    date: new Date().toISOString().split('T')[0],
+  });
+  
+  updateProduct(productId, { stock: product.stock - quantity });
+  
   res.status(201).json(sale);
 };
 

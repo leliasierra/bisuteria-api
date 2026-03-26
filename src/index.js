@@ -6,6 +6,8 @@
  */
 
 import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import saleRoutes from './routes/saleRoutes.js';
@@ -14,12 +16,25 @@ import saleRoutes from './routes/saleRoutes.js';
 const app = express();
 const PORT = 3000;
 
+app.use(cors());
+app.use(morgan('dev'));
 app.use(express.json({ type: 'application/json' }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    error: err.message || 'Error interno del servidor',
+    status: err.status || 500,
+    path: req.path,
+    method: req.method,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 /**
  * @param {Request} req
