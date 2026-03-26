@@ -111,90 +111,101 @@ curl -X DELETE http://localhost:3000/api/products/1 \
 
 ## Ejemplos con Postman
 
-### Paso 1: Importar colección (opcional)
-Si tienes el archivo de colección de Postman, impórtalo desde **File > Import**.
+> ℹ️ Todas las URLs de ejemplo están listas para copiar directamente en Postman
 
-### Paso 2: Iniciar sesión
+### Autenticación
 
-1. Crea una nueva request **POST**
-2. URL: `http://localhost:3000/api/auth/login`
-3. En **Body > raw > JSON**, ingresa:
-   ```json
-   {
-     "username": "admin",
-     "password": "admin123"
-   }
-   ```
-4. Click en **Send**
-5. **Copia el token** de la respuesta
+#### Login
+- **URL:** `http://localhost:3000/api/auth/login`
+- **Método:** POST
+- **Body (JSON):**
+```json
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
 
-### Paso 3: Configurar autenticación
+#### Register
+- **URL:** `http://localhost:3000/api/auth/register`
+- **Método:** POST
+- **Body (JSON):**
+```json
+{
+  "username": "nuevoUsuario",
+  "password": "password123"
+}
+```
 
-1. Ve a la pestaña **Authorization**
-2. Type: **Bearer Token**
-3. Token: Pega el token obtenido en el paso anterior
-4. Esto aplicará el token a todas las requests de la colección
+### Productos
 
-### Paso 4: Crear producto
+#### Listar todos
+- **URL:** `http://localhost:3000/api/products`
+- **Método:** GET
 
-1. Nueva request **POST** → `http://localhost:3000/api/products`
-2. Body (JSON):
-   ```json
-   {
-     "name": "Collar de Plata",
-     "material": "Plata 925",
-     "category": "Collares",
-     "price": 45000,
-     "stock": 10,
-     "minStock": 5
-   }
-   ```
-3. Send → Verás el producto creado con su ID
+#### Ver uno
+- **URL:** `http://localhost:3000/api/products/1`
+- **Método:** GET
 
-### Paso 5: Listar productos
+#### Crear (requiere auth)
+- **URL:** `http://localhost:3000/api/products`
+- **Método:** POST
+- **Headers:** `Authorization: Bearer <token>`
+- **Body (JSON):**
+```json
+{
+  "name": "Collar de Plata",
+  "material": "Plata 925",
+  "category": "Collares",
+  "price": 45000,
+  "stock": 10,
+  "minStock": 5
+}
+```
 
-1. Nueva request **GET** → `http://localhost:3000/api/products`
-2. No necesita auth (público)
-3. Send → Lista todos los productos
+#### Actualizar (requiere auth)
+- **URL:** `http://localhost:3000/api/products/1`
+- **Método:** PUT
+- **Headers:** `Authorization: Bearer <token>`
+- **Body (JSON):**
+```json
+{
+  "price": 50000,
+  "stock": 8
+}
+```
 
-### Paso 6: Ver producto específico
+#### Eliminar (requiere auth)
+- **URL:** `http://localhost:3000/api/products/1`
+- **Método:** DELETE
+- **Headers:** `Authorization: Bearer <token>`
 
-1. Nueva request **GET** → `http://localhost:3000/api/products/1`
-2. Send → Devuelve el producto con ID 1
+### Ventas
 
-### Paso 7: Actualizar producto
+#### Listar todas
+- **URL:** `http://localhost:3000/api/sales`
+- **Método:** GET
 
-1. Nueva request **PUT** → `http://localhost:3000/api/products/1`
-2. Body (solo campos a actualizar):
-   ```json
-   {
-     "price": 50000,
-     "stock": 8
-   }
-   ```
-3. Send → Producto actualizado
+#### Ver una
+- **URL:** `http://localhost:3000/api/sales/1`
+- **Método:** GET
 
-### Paso 8: Crear venta
+#### Crear (requiere auth)
+- **URL:** `http://localhost:3000/api/sales`
+- **Método:** POST
+- **Headers:** `Authorization: Bearer <token>`
+- **Body (JSON):**
+```json
+{
+  "productId": 1,
+  "quantity": 2
+}
+```
 
-1. Nueva request **POST** → `http://localhost:3000/api/sales`
-2. Body:
-   ```json
-   {
-     "productId": 1,
-     "quantity": 2
-   }
-   ```
-3. Send → Venta registrada (reduce stock automáticamente)
-
-### Paso 9: Listar ventas
-
-1. Nueva request **GET** → `http://localhost:3000/api/sales`
-2. Send → Lista todas las ventas
-
-### Paso 10: Eliminar producto
-
-1. Nueva request **DELETE** → `http://localhost:3000/api/products/1`
-2. Send → Producto eliminado (204 No Content)
+#### Eliminar (requiere auth)
+- **URL:** `http://localhost:3000/api/sales/1`
+- **Método:** DELETE
+- **Headers:** `Authorization: Bearer <token>`
 
 ## Usuarios Predeterminados
 
