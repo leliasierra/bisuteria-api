@@ -109,6 +109,93 @@ curl -X DELETE http://localhost:3000/api/products/1 \
   -H "Authorization: Bearer <tu_token>"
 ```
 
+## Ejemplos con Postman
+
+### Paso 1: Importar colección (opcional)
+Si tienes el archivo de colección de Postman, impórtalo desde **File > Import**.
+
+### Paso 2: Iniciar sesión
+
+1. Crea una nueva request **POST**
+2. URL: `http://localhost:3000/api/auth/login`
+3. En **Body > raw > JSON**, ingresa:
+   ```json
+   {
+     "username": "admin",
+     "password": "admin123"
+   }
+   ```
+4. Click en **Send**
+5. **Copia el token** de la respuesta
+
+### Paso 3: Configurar autenticación
+
+1. Ve a la pestaña **Authorization**
+2. Type: **Bearer Token**
+3. Token: Pega el token obtenido en el paso anterior
+4. Esto aplicará el token a todas las requests de la colección
+
+### Paso 4: Crear producto
+
+1. Nueva request **POST** → `http://localhost:3000/api/products`
+2. Body (JSON):
+   ```json
+   {
+     "name": "Collar de Plata",
+     "material": "Plata 925",
+     "category": "Collares",
+     "price": 45000,
+     "stock": 10,
+     "minStock": 5
+   }
+   ```
+3. Send → Verás el producto creado con su ID
+
+### Paso 5: Listar productos
+
+1. Nueva request **GET** → `http://localhost:3000/api/products`
+2. No necesita auth (público)
+3. Send → Lista todos los productos
+
+### Paso 6: Ver producto específico
+
+1. Nueva request **GET** → `http://localhost:3000/api/products/1`
+2. Send → Devuelve el producto con ID 1
+
+### Paso 7: Actualizar producto
+
+1. Nueva request **PUT** → `http://localhost:3000/api/products/1`
+2. Body (solo campos a actualizar):
+   ```json
+   {
+     "price": 50000,
+     "stock": 8
+   }
+   ```
+3. Send → Producto actualizado
+
+### Paso 8: Crear venta
+
+1. Nueva request **POST** → `http://localhost:3000/api/sales`
+2. Body:
+   ```json
+   {
+     "productId": 1,
+     "quantity": 2
+   }
+   ```
+3. Send → Venta registrada (reduce stock automáticamente)
+
+### Paso 9: Listar ventas
+
+1. Nueva request **GET** → `http://localhost:3000/api/sales`
+2. Send → Lista todas las ventas
+
+### Paso 10: Eliminar producto
+
+1. Nueva request **DELETE** → `http://localhost:3000/api/products/1`
+2. Send → Producto eliminado (204 No Content)
+
 ## Usuarios Predeterminados
 
 | Usuario | Contraseña |
